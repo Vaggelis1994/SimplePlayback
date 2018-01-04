@@ -1,6 +1,7 @@
 #pragma once
 
 #include "networkReader.h"
+#define BUFFER_SIZE 4096
 
 /**
  * Implement the player.
@@ -9,6 +10,40 @@
  *
  */
 class Player {
+
+private:
+
+    //variables for mixing
+    double networkLevel;
+    double playerLevel;
+
+    net::StopWatch stopWatch;
+    net::NetworkReader nr;
+
+    //output streams
+    std::ofstream sink;
+    std::ofstream stats;
+
+    //buffers
+    char *playerBuffer;
+    char *networkBuffer;
+    char *mix;
+
+    //requested bytes for buffers
+    size_t playerBytes;
+    size_t networkBytes;
+
+    //represents number of samples currently being streamed
+    int writtenSamples;
+
+    std::vector<int16_t> m_saw;
+    size_t m_sawIndex;
+
+    //variables for pause method
+    std::chrono::milliseconds timePaused;
+    int pausedSample;
+    bool paused;
+
 public:
     Player() : m_sawIndex(0){}
     virtual ~Player() {}
@@ -189,35 +224,6 @@ private:
 
     }
 
-    //variables for mixing
-    double networkLevel;
-    double playerLevel;
 
-    net::StopWatch stopWatch;
-    net::NetworkReader nr;
-
-    //output streams
-    std::ofstream sink;
-    std::ofstream stats;
-
-    //buffers
-    char *playerBuffer;
-    char *networkBuffer;
-    char *mix;
-
-    //requested bytes for buffers
-    size_t playerBytes;
-    size_t networkBytes;
-
-    //represents number of samples currently being streamed
-    int writtenSamples;
-
-    std::vector<int16_t> m_saw;
-    size_t m_sawIndex;
-
-    //variables for pause method
-    std::chrono::milliseconds timePaused;
-    int pausedSample;
-    bool paused;
 
 };
